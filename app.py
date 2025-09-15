@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import os
 
 
 # --- App Title ---
@@ -12,12 +13,13 @@ st.title("🎬 Movie Dashboard")
 # --- Load Dataset ---
 @st.cache_data
 def load_data():
-    df = pd.read_csv('/workspaces/movie-dashboard/data/movie_ratings.csv')
-    df['genres'] = df['genres'].str.split('|')
-    df_exploded = df.explode('genres')
-    return df_exploded
-
-df = load_data()
+    current_dir = os.path.dirname(__file__)
+    data_path = os.path.join(current_dir, 'data', 'movie_ratings.csv')
+    if not os.path.exists(data_path):
+        st.error(f"Data file not found: {data_path}")
+        return pd.DataFrame()  # Return an empty DataFrame to prevent crashing
+    df = pd.read_csv(data_path)
+    return df
 
 # --- Sidebar Filters ---
 st.sidebar.header("Filters")
