@@ -21,6 +21,8 @@ def load_data():
     df = pd.read_csv(data_path)
     return df
 
+df = load_data()
+
 # --- Sidebar Filters ---
 st.sidebar.header("Filters")
 age_filter = st.sidebar.slider(
